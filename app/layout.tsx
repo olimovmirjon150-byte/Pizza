@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "JobPortal",
-  description: "Find your dream job with JobPortal - the ultimate job search platform. Explore thousands of job listings, connect with top employers, and take the next step in your career today.",
+  title: "Pizza shop",
+  description: "This is a online shop for buying pizza",
 };
 
 export default function RootLayout({
