@@ -33,10 +33,8 @@ export default function CartPage() {
   };
 
   const clearCart = () => {
-    if (window.confirm("Очистить корзину?")) {
       setItems([]);
       localStorage.removeItem("cart");
-    }
   };
 
   const removeItem = (id: string | number) => {
