@@ -67,8 +67,7 @@ export default function CartPage() {
           />
           <Link href="/">
             <button 
-              className="btn btn-dark fw-bold px-5 py-3 rounded-pill"
-              style={{ backgroundColor: "#282828" }}
+              className="btn btn-dark fw-bold px-5 py-3 rounded-pill hover:text-white!"
             >
               Вернуться назад
             </button>
@@ -108,7 +107,7 @@ export default function CartPage() {
             <div className="d-flex align-items-center gap-3">
               <button 
                 onClick={() => updateCount(item.id, -1)}
-                className="btn btn-outline-danger rounded-circle d-flex align-items-center justify-content-center"
+                className="btn btn-outline-danger rounded-circle d-flex align-items-center justify-content-center hover:text-white!"
                 style={{ width: "32px", height: "32px", color: "#fe5f1e", borderColor: "#fe5f1e" }}
               >
                 –
@@ -116,7 +115,7 @@ export default function CartPage() {
               <b style={{ fontSize: "20px" }}>{item.count}</b>
               <button 
                 onClick={() => updateCount(item.id, 1)}
-                className="btn btn-outline-danger rounded-circle d-flex align-items-center justify-content-center"
+                className="btn btn-outline-danger rounded-circle d-flex align-items-center justify-content-center hover:text-white!"
                 style={{ width: "32px", height: "32px", color: "#fe5f1e", borderColor: "#fe5f1e" }}
               >
                 +
@@ -129,8 +128,6 @@ export default function CartPage() {
 
             <button 
               onClick={() => removeItem(item.id)}
-              className="btn btn-outline-secondary rounded-circle text-muted border-light-subtle"
-              style={{ width: "32px", height: "32px" }}
             >
               ✕
             </button>
@@ -149,7 +146,7 @@ export default function CartPage() {
 
       <div className="d-flex justify-content-between mt-5">
         <Link href="/">
-          <button className="btn btn-outline-secondary px-4 py-3 rounded-pill text-muted fw-bold border-light-subtle">
+          <button className="px-3 py-2">
             ‹ Вернуться назад
           </button>
         </Link>

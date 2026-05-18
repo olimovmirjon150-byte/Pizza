@@ -1,103 +1,8 @@
-// "use client";
-
-// import axios from "axios";
-// import { useEffect, useState } from "react";
-
-// const API = "https://serve.faux-api.com/f92ae21abaa048e1a243f392";
-
-// const Products = () => {
-//   const [products, setProducts] = useState<any[]>([]);
-
-//   useEffect(() => {
-//     const fetchProducts = async () => {
-//       try {
-//         const res = await axios.get(`${API}/products`);
-
-//         // API array qaytarmasa ham xavfsiz ishlaydi
-//         setProducts(Array.isArray(res.data) ? res.data : res.data.result || []);
-//       } catch (error) {
-//         console.log(error);
-//       }
-//     };
-
-//     fetchProducts();
-//   }, []);
-
-//   return (
-//     <div className="flex justify-center items-start flex-wrap mt-5">
-//       {products.map((item: any) => (
-//         <div
-//           key={item.id}
-//           className="w-80 bg-white rounded-3xl p-4 shadow-sm"
-//         >
-//           {/* Image */}
-//           <div className="flex justify-center">
-//             <img
-//                   src={item.imageUrl}
-//                   alt={item.title}
-//                   className="img-fluid mb-3"
-//                   width={260}
-//                   height={260}
-//                 />
-//           </div>
-
-//           {/* Title */}
-//           <h2 className="text-center text-xl font-bold mt-4">
-//             {item.title}
-//           </h2>
-
-//           {/* Options */}
-//           <div className="bg-gray-100 rounded-2xl p-2 mt-4">
-            
-//             {/* Type */}
-//             <div className="grid grid-cols-2 gap-2">
-//               <button className="bg-white shadow-sm rounded-xl py-2 text-sm font-medium">
-//                 тонкое
-//               </button>
-
-//               <button className="rounded-xl py-2 text-sm text-gray-500 hover:bg-white transition">
-//                 традиционное
-//               </button>
-//             </div>
-
-//             {/* Size */}
-//             <div className="grid grid-cols-3 gap-2 mt-2">
-//               <button className="bg-white shadow-sm rounded-xl py-2 text-sm font-medium">
-//                 26 см.
-//               </button>
-
-//               <button className="rounded-xl py-2 text-sm text-gray-500 hover:bg-white transition">
-//                 30 см.
-//               </button>
-
-//               <button className="rounded-xl py-2 text-sm text-gray-500 hover:bg-white transition">
-//                 40 см.
-//               </button>
-//             </div>
-//           </div>
-
-//           {/* Bottom */}
-//           <div className="flex items-center justify-between mt-5">
-//             <p className="text-2xl font-bold">
-//               от {item.price} ₽
-//             </p>
-
-//             <button className="flex items-center gap-2 border border-orange-500 text-orange-500 px-4 py-2 rounded-full font-semibold hover:bg-orange-500 hover:text-white transition">
-//               + Добавить
-//             </button>
-//           </div>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
-
-// export default Products;
-
-
 "use client";
-import router from "next/router";
-import { useState, useEffect } from "react";
+
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface PizzaItem {
   id: string;
@@ -112,132 +17,178 @@ interface CategoryItem {
   name: string;
 }
 
+const PRODUCTS_API =
+  "https://serve.faux-api.com/f92ae21abaa048e1a243f392/products";
+
+const CATEGORIES_API =
+  "https://68f11ffe0b966ad50035753d.mockapi.io/categories";
+
 const PizzaPage = () => {
+  const router = useRouter();
+
   const [items, setItems] = useState<PizzaItem[]>([]);
   const [categories, setCategories] = useState<CategoryItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
-  const [activeCategory] = useState(0);
+  const [activeCategory, setActiveCategory] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [resProducts, resCategories] = await Promise.all([
-          fetch("https://68f11ffe0b966ad50035753d.mockapi.io/products"),
-          fetch("https://68f11ffe0b966ad50035753d.mockapi.io/categories"),
+        setLoading(true);
+
+        const [productsRes, categoriesRes] = await Promise.all([
+          axios.get(PRODUCTS_API),
+          axios.get(CATEGORIES_API),
         ]);
 
-        const productsData = await resProducts.json();
-        const categoriesData = await resCategories.json();
+        const productsData = Array.isArray(productsRes.data)
+          ? productsRes.data
+          : productsRes.data.result || [];
+
+        const categoriesData = Array.isArray(categoriesRes.data)
+          ? categoriesRes.data
+          : [];
 
         setItems(productsData);
-        setCategories([{ id: 0, name: "Все" }, ...categoriesData]);
+
+        setCategories([
+          { id: 0, name: "Все" },
+          ...categoriesData,
+        ]);
       } catch (error) {
-        console.error("Xatolik:", error);
+        console.log("Ошибка:", error);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
+
     fetchData();
   }, []);
 
   const onAddPizza = (pizza: PizzaItem) => {
     const cartData = localStorage.getItem("cart");
+
     const cart = cartData ? JSON.parse(cartData) : [];
 
     const newCartItem = {
       id: pizza.id,
       name: pizza.name,
       price: pizza.price,
-      imageUrl: "/image 5.png",
-      type: "Tonkoe",
+      image: pizza.image,
+      category: pizza.category,
       size: 30,
       count: 1,
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const findItem = cart.find((obj: any) => obj.id === pizza.id);
+    const findItem = cart.find((item: any) => item.id === pizza.id);
+
     if (findItem) {
-      findItem.count++;
+      findItem.count += 1;
     } else {
       cart.push(newCartItem);
     }
 
     localStorage.setItem("cart", JSON.stringify(cart));
+
     router.push("/cart");
   };
 
   const filteredItems =
-    activeCategory > 0
-      ? items.filter((item) => Number(item.category) === activeCategory)
-      : items;
+    activeCategory === 0
+      ? items
+      : items.filter(
+          (item) => Number(item.category) === activeCategory
+        );
 
   return (
-    <div
-      className="container py-5"
-      style={{ fontFamily: "Proxima Nova, system-ui, sans-serif" }}
-    >
-      <h2 className="fw-bold mb-4">Все piццы</h2>
+    <div className="max-w-7xl mx-auto px-5 py-10">
 
-      <div className="row g-4">
-        {isLoading ? (
-          <p className="text-center w-100">Yuklanmoqda...</p>
-        ) : (
-          filteredItems.map((pizza) => (
+      {/* Categories */}
+
+      {/* Title */}
+      <h2 className="text-4xl font-bold mb-10">
+        Все пиццы
+      </h2>
+
+      {/* Products */}
+      {loading ? (
+        <div className="flex justify-center items-center py-20">
+          <p className="text-2xl font-semibold">
+            Загрузка...
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+          {filteredItems.map((pizza) => (
             <div
               key={pizza.id}
-              className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center"
+              className="bg-white rounded-3xl p-4"
             >
-              <div
-                className="pizza-block text-center"
-                style={{ width: "280px" }}
-              >
+              {/* Image */}
+              <div className="flex justify-center">
                 <img
                   src={pizza.image}
                   alt={pizza.name}
-                  className="img-fluid mb-3"
-                  width={260}
-                  height={260}
+                  className="w-56 h-56 object-cover rounded-full hover:scale-105 transition duration-300"
                 />
-                <h4 className="fw-bold mb-3" style={{ fontSize: "20px" }}>
-                  {pizza.name}
-                </h4>
+              </div>
 
-                <div
-                  className="p-2 rounded-3 mb-3"
-                  style={{ backgroundColor: "#f3f3f3" }}
-                >
-                  <div className="d-flex gap-1 mb-2">
-                    <button className="btn btn-light p-1!">Tonkoe</button>
-                    <button className="btn btn-light p-1!">
-                      Traditsionnoe
-                    </button>
-                  </div>
+              {/* Title */}
+              <h2 className="text-center text-2xl font-bold mt-4">
+                {pizza.name}
+              </h2>
 
-                  <div className="d-flex gap-1">
-                    <button className="btn btn-light">10 cm</button>
-                    <button className="btn btn-light">18 cm</button>
-                    <button className="btn btn-light">34 cm</button>
-                  </div>
+              {/* Options */}
+              <div className="bg-gray-100 rounded-2xl p-2 mt-5">
+
+                {/* Type */}
+                <div className="grid grid-cols-2 gap-2">
+                  <button className="bg-white shadow-sm rounded-xl py-2 text-sm font-medium">
+                    тонкое
+                  </button>
+
+                  <button className="rounded-xl py-2 text-sm text-gray-500 hover:bg-white transition">
+                    традиционное
+                  </button>
                 </div>
 
-                <div className="d-flex align-items-center justify-content-between">
-                  <div className="fw-bold" style={{ fontSize: "22px" }}>
-                    от {pizza.price} ₽
-                  </div>
-                  <button
-                    onClick={() => onAddPizza(pizza)}
-                    className="btn btn-outline-danger px-3 py-2 fw-bold rounded-pill border-2 d-flex align-items-center gap-1"
-                    style={{ color: "#fe5f1e", borderColor: "#fe5f1e" }}
-                  >
-                    <span>+ Добавить</span>
+                {/* Size */}
+                <div className="grid grid-cols-3 gap-2 mt-2">
+                  <button className="bg-white shadow-sm rounded-xl py-2 text-sm font-medium">
+                    26 см.
+                  </button>
+
+                  <button className="rounded-xl py-2 text-sm text-gray-500 hover:bg-white transition">
+                    30 см.
+                  </button>
+
+                  <button className="rounded-xl py-2 text-sm text-gray-500 hover:bg-white transition">
+                    40 см.
                   </button>
                 </div>
               </div>
+
+              {/* Bottom */}
+              <div className="flex items-center justify-between mt-6">
+
+                <p className="text-2xl font-bold">
+                  от {pizza.price} ₽
+                </p>
+
+                <button
+                  onClick={() => onAddPizza(pizza)}
+                  className="border border-orange-500 text-orange-500 px-3 py-2 rounded-full! font-semibold hover:bg-orange-500 hover:text-white transition"
+                >
+                  + Добавить
+                </button>
+
+              </div>
             </div>
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
