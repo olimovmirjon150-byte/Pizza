@@ -1,15 +1,13 @@
-﻿import Categories from "./_components/Categories";
-import Footer from "./_components/Footer";
+﻿import Footer from "./_components/Footer";
 import Header from "./_components/Header";
-import Products from "./_components/Products";
+import PizzaPage from "./_components/PizzaPage";
 
 const page = () => {
   return (
     <div>
       <Header />
-      <Categories />
-      <Products />
-      <Footer />
+      <PizzaPage />
+      <Footer  />
     </div>
   );
 };

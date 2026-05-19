@@ -27,6 +27,16 @@ export default function AdminLayout({
       href: "/admin/applications",
       icon: "📦",
     },
+    {
+      name: "Категории",
+      href: "/admin/categories",
+      icon: "🏷️",
+    },
+    {
+      name: "Создать категорию",
+      href: "/admin/createCategory",
+      icon: "➕",
+    },
   ];
 
   return (
@@ -79,7 +89,7 @@ export default function AdminLayout({
             localStorage.removeItem("pizzaAdmin");
             router.push("/");
           }}
-          className="mt-auto bg-orange-500 text-white py-3 rounded-2xl! font-semibold hover:bg-orange-600 transition"
+          className="mt-2 bg-orange-500 text-white py-3 rounded-2xl! font-semibold hover:bg-orange-600 transition"
         >
           Выйти
         </button>
