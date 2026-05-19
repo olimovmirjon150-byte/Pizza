@@ -8,7 +8,7 @@ interface PizzaItem {
   id: string;
   name: string;
   price: number;
-  image: string;
+  imageUrl: string;
   category: number;
 }
 
@@ -75,7 +75,7 @@ const PizzaPage = () => {
       id: pizza.id,
       name: pizza.name,
       price: pizza.price,
-      image: pizza.image,
+      image: pizza.imageUrl,
       category: pizza.category,
       size: 30,
       count: 1,
@@ -129,7 +129,7 @@ const PizzaPage = () => {
               {/* Image */}
               <div className="flex justify-center">
                 <img
-                  src={pizza.image}
+                  src={pizza.imageUrl}
                   alt={pizza.name}
                   className="w-56 h-56 object-cover rounded-full hover:scale-105 transition duration-300"
                 />
