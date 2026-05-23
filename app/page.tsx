@@ -1,13 +1,17 @@
 ﻿import Footer from "./_components/Footer";
 import Header from "./_components/Header";
-import PizzaPage from "./_components/PizzaPage";
+import Hero from "./_components/Hero";
+import Info from "./_components/Info";
+import Section from "./_components/Section";
 
 const page = () => {
   return (
     <div>
       <Header />
-      <PizzaPage />
-      <Footer  />
+      <Hero />
+      <Section />
+      <Info />
+      <Footer />
     </div>
   );
 };
