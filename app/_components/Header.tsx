@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { Menu, Search, HousePlus } from "lucide-react";
+import { User2 } from "lucide-react";
+
 
 export default function Header() {
   return (
@@ -80,9 +82,11 @@ export default function Header() {
 
         {/* ACTIONS */}
         <div className="flex items-center gap-3">
-          <button className="hidden rounded-full! border border-white/10 bg-white/5 px-5 py-2 text-sm font-medium text-white transition hover:bg-white/10 md:block">
-            Login
-          </button>
+          <Link className="text-decoration-none" href="/login">
+            <button className="hidden rounded-full! border border-white/10 bg-white/5 px-2 py-2 text-sm font-medium text-white transition hover:bg-white/10 md:block">
+              <User2 className="text-cyan-300" size={22} />
+            </button>
+          </Link>
 
           <button className="flex items-center gap-2 rounded-full! bg-linear-to-r from-cyan-400 to-blue-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-cyan-500/20 transition hover:scale-105">
             Add Property

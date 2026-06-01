@@ -2,9 +2,14 @@
 
 import { Eye, EyeOff, Lock, ShieldCheck, User2 } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function AdminLoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
 
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black px-6 text-white">
@@ -35,51 +40,61 @@ export default function AdminLoginPage() {
           </div>
 
           <h1 className="mt-8 text-5xl font-black">
-            Login panel
+            Login Panel
           </h1>
 
           <p className="mt-4 text-gray-400">
-            Secure access for NestUz login
+            Administrator authentication panel
           </p>
         </div>
 
         {/* DEFAULT LOGIN INFO */}
         <div className="mt-10 rounded-3xl border border-cyan-400/20 bg-cyan-400/10 p-5 backdrop-blur-xl">
           
-          <p className="text-sm text-cyan-300">
+          <p className="text-sm font-medium text-cyan-300">
             Default Credentials
           </p>
 
           <div className="mt-4 space-y-2 text-sm text-gray-300">
+            
             <p>
-              Username: <span className="font-semibold text-white">admin</span>
+              Email:{" "}
+              <span className="font-semibold text-white">
+                admin@gmail.com
+              </span>
             </p>
 
             <p>
-              Password: <span className="font-semibold text-white">admin123</span>
+              Password:{" "}
+              <span className="font-semibold text-white">
+                admin123
+              </span>
             </p>
           </div>
         </div>
 
-        {/* FORM */}
+          {/* FORM */}
         <div className="mt-10 space-y-6">
           
           {/* USERNAME */}
           <div>
             <p className="mb-3 text-sm text-gray-400">
-              Admin Username
+              Email
             </p>
 
-            <div className="flex h-16 items-center gap-4 rounded-2xl border border-white/10 bg-white/5 px-5 backdrop-blur-xl transition focus-within:border-cyan-400/40">
-              
+            <div className={"flex h-16 items-center gap-4 rounded-2xl bg-white/5 px-5 backdrop-blur-xl transition " + (error ? "border border-red-500" : "border border-white/10") + " focus-within:border-cyan-400/40"}>
+
               <User2 className="text-cyan-300" size={22} />
 
               <input
-                type="text"
-                placeholder="Admin Username"
+                type="email"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); if (error) setError(false); }}
+                placeholder="Email..."
                 className="w-full bg-transparent text-white outline-none placeholder:text-gray-500"
               />
             </div>
+
           </div>
 
           {/* PASSWORD */}
@@ -88,17 +103,20 @@ export default function AdminLoginPage() {
               Password
             </p>
 
-            <div className="flex h-16 items-center gap-4 rounded-2xl border border-white/10 bg-white/5 px-5 backdrop-blur-xl transition focus-within:border-cyan-400/40">
-              
+            <div className={"flex h-16 items-center gap-4 rounded-2xl bg-white/5 px-5 backdrop-blur-xl transition " + (error ? "border border-red-500" : "border border-white/10") + " focus-within:border-cyan-400/40"}>
+
               <Lock className="text-cyan-300" size={22} />
 
               <input
                 type={showPassword ? "text" : "password"}
-                placeholder="Admin Password"
+                value={password}
+                onChange={(e) => { setPassword(e.target.value); if (error) setError(false); }}
+                placeholder="Password..."
                 className="w-full bg-transparent text-white outline-none placeholder:text-gray-500"
               />
 
               <button
+                type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="text-gray-400 transition hover:text-white"
               >
@@ -109,13 +127,30 @@ export default function AdminLoginPage() {
                 )}
               </button>
             </div>
+
+            {error && (
+              <p className="mt-2 text-sm text-red-400">email yoki parol xato</p>
+            )}
           </div>
 
           {/* BUTTON */}
-          <button className="mt-4 flex h-16 w-full items-center justify-center rounded-2xl! bg-linear-to-r from-cyan-400 to-blue-600 text-sm font-semibold text-white shadow-2xl shadow-cyan-500/30 transition hover:scale-[1.02]">
-              <User2 className="text-cyan-300 mr-0.5" size={18} />
-            Login 
-          </button>
+          <div>
+            <button
+              type="button"
+              onClick={() => {
+                if (email === "admin@gmail.com" && password === "admin123") {
+                  router.push("/admin");
+                } else {
+                  setError(true);
+                }
+              }}
+              className="mt-4 flex h-16 w-full items-center justify-center gap-2 rounded-2xl! bg-linear-to-r from-cyan-400 to-blue-600 text-sm font-semibold text-white shadow-2xl shadow-cyan-500/30 transition hover:scale-[1.02]"
+            >
+              <ShieldCheck size={18} />
+
+              Login
+            </button>
+          </div>
         </div>
 
         {/* BOTTOM GLOW */}
@@ -123,4 +158,4 @@ export default function AdminLoginPage() {
       </div>
     </section>
   );
-}   
+}
