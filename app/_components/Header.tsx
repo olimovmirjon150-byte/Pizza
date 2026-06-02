@@ -88,9 +88,11 @@ export default function Header() {
             </button>
           </Link>
 
+<Link href="/contact" className="text-decoration-none">
           <button className="flex items-center gap-2 rounded-full! bg-linear-to-r from-cyan-400 to-blue-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-cyan-500/20 transition hover:scale-105">
             Add Property
           </button>
+</Link>
 
           <button className="flex h-11 w-11 items-center justify-center rounded-full! border border-white/10 bg-white/5 lg:hidden">
             <Menu size={20} />

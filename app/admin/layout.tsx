@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { HousePlus } from "lucide-react";
 
@@ -11,6 +12,16 @@ export default function AdminLayout({
 }) {
   const router = useRouter();
   const pathname = usePathname();
+  const [authChecked, setAuthChecked] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const isAdmin = localStorage.getItem("nestuzAdmin") === "true";
+    if (!isAdmin) {
+      router.replace("/login");
+    }
+    setAuthChecked(true);
+  }, [router]);
 
   const menuItems = [
     {
@@ -39,6 +50,10 @@ export default function AdminLayout({
       icon: "✨",
     },
   ];
+
+  if (!authChecked) {
+    return null;
+  }
 
   return (
     <div className="flex min-h-screen bg-[#050816] text-white">

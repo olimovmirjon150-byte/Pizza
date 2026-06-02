@@ -12,6 +12,7 @@ import {
 
 import MainHeader from "../_components/MainHeader";
 import Link from "next/link";
+import Footer from "../_components/Footer";
 
 type PropertyType = {
   id: string;
@@ -212,11 +213,11 @@ export default function PropertiesPage() {
 
                     {/* BUTTON */}
                     <Link
-  href={`/properties/${property.id}`}
-  className="mt-6 block w-full text-decoration-none rounded-2xl bg-linear-to-r from-cyan-400 to-blue-600 py-4 text-center text-sm font-semibold text-white no-underline"
->
-  View Details
-</Link>
+                      href={`/properties/${property.id}`}
+                      className="mt-6 block w-full rounded-2xl bg-linear-to-r from-cyan-400 to-blue-600 py-4 text-center text-sm font-semibold text-white text-decoration-none"
+                    >
+                      View Details
+                    </Link>
                   </div>
                 </div>
               ))}
@@ -235,6 +236,7 @@ export default function PropertiesPage() {
             )}
         </div>
       </section>
+      <Footer />
     </div>
   );
 }

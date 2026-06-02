@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Pizza shop",
-  description: "This is a online shop for buying pizza",
+  title: "NestUz",
+  description: "NestUz is a real estate platform designed to simplify the process of finding and purchasing properties. Instead of searching through multiple websites or social media pages, users can explore available houses, apartments, and villas in one place, compare options, view detailed information, and submit purchase requests directly to property owners. The platform helps buyers save time by providing organized property listings, advanced search capabilities, detailed property pages, and a simple ordering process. For administrators, it offers a centralized dashboard to manage properties, categories, and customer orders efficiently, making property management faster and more organized. NestUz creates a seamless connection between property owners and potential buyers, reducing manual communication and making the real estate experience more convenient, transparent, and user-friendly.",
 };
 
 export default function RootLayout({

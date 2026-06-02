@@ -1,7 +1,7 @@
 "use client";
 
 import { Eye, EyeOff, Lock, ShieldCheck, User2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function AdminLoginPage() {
@@ -10,6 +10,13 @@ export default function AdminLoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (localStorage.getItem("nestuzAdmin") === "true") {
+      router.replace("/admin");
+    }
+  }, [router]);
 
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black px-6 text-white">
@@ -139,6 +146,7 @@ export default function AdminLoginPage() {
               type="button"
               onClick={() => {
                 if (email === "admin@gmail.com" && password === "admin123") {
+                  localStorage.setItem("nestuzAdmin", "true");
                   router.push("/admin");
                 } else {
                   setError(true);
